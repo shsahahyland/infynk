@@ -1,0 +1,65 @@
+# infynk sources config — multi-org / multi-team format
+#
+# teams:
+#   <team_name>:
+#     github:
+#       orgs:
+#         - name: <org>
+#           branch: <branch>
+#           repos: [repo1, repo2, ...]
+#     confluence: [...]
+#     jira: [...]
+
+teams:
+  Automate:
+    github:
+      orgs:
+        - name: Alfresco
+          branch: develop
+          repos:
+            - hxp-studio-services
+            - hxp-process-services
+            - alfresco-identity-adapter-service
+            - alfresco-process-releases
+            - alfresco-process-infrastructure-deployment
+            - hxp-common-libraries
+            - hxp-frontend-apps
+            - terraform-alfresco-pipeline
+        - name: Alfresco
+          branch: master
+          repos:
+            - alfresco-build-tools
+        - name: Alfresco
+          branch: main
+          repos:
+            - automate-build-tools
+        - name: Activiti
+          branch: develop
+          repos:
+            - activiti-cloud
+            - Activiti
+        - name: HylandSoftware
+          branch: main
+          repos:
+            - terraform-aws-hxps-environment
+            - corretto-sambuca
+    confluence:
+      - space: HXP
+        base_url: https://hyland.atlassian.net/wiki
+    jira:
+      - project: AAE
+        base_url: https://hyland.atlassian.net
+    hyland_docs:
+      - base_url: https://support.hyland.com/p/processintel
+
+  Payments:
+    mock: true
+    sources_display:
+      - github:payments-svc
+      - jira:PAY
+
+  Platform:
+    mock: true
+    sources_display:
+      - github:infra
+      - confluence:ARCH

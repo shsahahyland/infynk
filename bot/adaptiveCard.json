@@ -1,0 +1,34 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.4",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "🔍 infynk answer",
+      "weight": "Bolder",
+      "size": "Medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "{{answer}}",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "Sources",
+      "weight": "Bolder",
+      "spacing": "Medium"
+    },
+    {
+      "type": "FactSet",
+      "facts": "{{sources_facts}}"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Confidence: {{confidence_pct}}%",
+      "color": "{{confidence_color}}",
+      "size": "Small"
+    }
+  ]
+}

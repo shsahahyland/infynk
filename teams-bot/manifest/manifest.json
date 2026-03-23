@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "00000000-0000-0000-0000-000000000001",
+  "packageName": "com.hyland.infynk",
+  "developer": {
+    "name": "Hyland",
+    "websiteUrl": "https://hyland.com",
+    "privacyUrl": "https://hyland.com/privacy",
+    "termsOfUseUrl": "https://hyland.com/terms"
+  },
+  "name": {
+    "short": "infynk",
+    "full": "infynk — AI Knowledge System"
+  },
+  "description": {
+    "short": "Ask questions about Hyland Automate codebases and docs",
+    "full": "infynk connects GitHub, Confluence, Jira and Hyland support docs to answer engineering questions with source citations and confidence scores."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#4f8cff",
+  "bots": [
+    {
+      "botId": "00000000-0000-0000-0000-000000000001",
+      "scopes": ["personal", "team", "groupchat"],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": ["personal", "team"],
+          "commands": [
+            { "title": "help",   "description": "Show available commands" },
+            { "title": "ingest", "description": "Ingest sources for active team" },
+            { "title": "status", "description": "Show backend health and graph stats" },
+            { "title": "team",   "description": "Set active team: team Automate" },
+            { "title": "ask",    "description": "Ask a question: ask how does auth work?" }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": [
+    "localhost",
+    "*.ngrok-free.app",
+    "*.ngrok.io"
+  ]
+}

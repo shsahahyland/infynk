@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <!-- infinity / graph node ring -->
+  <circle cx="20" cy="20" r="18" fill="#0d0d14" stroke="#4f8cff" stroke-width="1.5"/>
+  <!-- left lobe of ∞ -->
+  <path d="M10 20 C10 14 17 11 20 14 C23 17 27 23 30 20 C27 17 23 11 20 14" stroke="#00e5c0" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- right lobe of ∞ -->
+  <path d="M30 20 C30 26 23 29 20 26 C17 23 13 17 10 20 C13 23 17 29 20 26" stroke="#4f8cff" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- node dots -->
+  <circle cx="10" cy="20" r="2.5" fill="#00e5c0"/>
+  <circle cx="30" cy="20" r="2.5" fill="#4f8cff"/>
+  <!-- wordmark -->
+  <text x="48" y="27" font-family="'IBM Plex Mono', 'Courier New', monospace" font-size="18" font-weight="600" letter-spacing="-0.5" fill="#ffffff">infynk</text>
+</svg>

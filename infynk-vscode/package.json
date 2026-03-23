@@ -1,0 +1,105 @@
+{
+  "name": "infynk",
+  "displayName": "infynk — AI Knowledge System",
+  "description": "Ask questions about your codebase using the infynk AI knowledge system.",
+  "version": "0.1.0",
+  "publisher": "infynk",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "icon": "images/icon.png",
+  "activationEvents": [
+    "onView:infynkSidebar",
+    "onCommand:infynk.askQuestion",
+    "onCommand:infynk.askAboutSelection",
+    "onCommand:infynk.ingestSources",
+    "onCommand:infynk.showGraphStats",
+    "onCommand:infynk.setActiveTeam"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "infynkContainer",
+          "title": "infynk",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "infynkContainer": [
+        {
+          "type": "webview",
+          "id": "infynkSidebar",
+          "name": "infynk",
+          "icon": "images/icon.svg",
+          "contextualTitle": "infynk AI Knowledge System"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "infynk.askQuestion",
+        "title": "infynk: Ask a question"
+      },
+      {
+        "command": "infynk.askAboutSelection",
+        "title": "Ask infynk about this"
+      },
+      {
+        "command": "infynk.ingestSources",
+        "title": "infynk: Ingest sources"
+      },
+      {
+        "command": "infynk.showGraphStats",
+        "title": "infynk: Show knowledge graph stats"
+      },
+      {
+        "command": "infynk.setActiveTeam",
+        "title": "infynk: Set active team"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "infynk.askAboutSelection",
+          "when": "editorHasSelection",
+          "group": "infynk@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "infynk",
+      "properties": {
+        "infynk.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "URL of the infynk FastAPI backend."
+        },
+        "infynk.defaultTeam": {
+          "type": "string",
+          "default": "Automate",
+          "description": "Default team to use for queries."
+        },
+        "infynk.autoIngestOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically trigger ingestion when the extension activates."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  }
+}

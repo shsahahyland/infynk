@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global ──────────────────────────────────────────────────── */
+html,
+body,
+#root {
+  height: 100%;
+  background-color: #06060a;
+  color: #cbd5e1; /* slate-300 */
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Subtle grid background ──────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(79, 140, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 140, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Scrollbars ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4f8cff44;
+}
+
+/* ── Typing dots ─────────────────────────────────────────────── */
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.typing-dot {
+  animation: blink 1.4s infinite both;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ── Prose (markdown answers) ───────────────────────────────── */
+.prose-dark {
+  color: #cbd5e1;
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+.prose-dark h1,
+.prose-dark h2,
+.prose-dark h3 {
+  color: #e2e8f0;
+  font-weight: 600;
+  margin: 1rem 0 0.4rem;
+}
+.prose-dark h1 {
+  font-size: 1.15rem;
+}
+.prose-dark h2 {
+  font-size: 1.05rem;
+}
+.prose-dark h3 {
+  font-size: 0.95rem;
+}
+.prose-dark p {
+  margin: 0.5rem 0;
+}
+.prose-dark ul,
+.prose-dark ol {
+  padding-left: 1.4rem;
+  margin: 0.4rem 0;
+}
+.prose-dark li {
+  margin: 0.2rem 0;
+}
+.prose-dark code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  background: #1a1a2e;
+  color: #00e5c0;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+.prose-dark pre {
+  background: #0d0d14;
+  border: 1px solid #1a1a2e;
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  margin: 0.6rem 0;
+}
+.prose-dark pre code {
+  background: transparent;
+  padding: 0;
+  color: #94a3b8;
+}
+.prose-dark a {
+  color: #4f8cff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-dark blockquote {
+  border-left: 3px solid #4f8cff44;
+  padding-left: 0.8rem;
+  color: #94a3b8;
+  margin: 0.5rem 0;
+}
+.prose-dark strong {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+.prose-dark hr {
+  border-color: #1a1a2e;
+  margin: 0.8rem 0;
+}
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.22s ease-out both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, #1a1a2e 25%, #222236 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* ── Pulse dot ───────────────────────────────────────────────── */
+@keyframes livePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 #00e5c055;
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+.pulse-live {
+  animation: livePulse 2s ease-in-out infinite;
+}
