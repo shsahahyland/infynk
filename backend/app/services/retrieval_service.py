@@ -92,7 +92,7 @@ class RetrievalService:
         q_vec = self.llm.embed_query(query).reshape(1, -1)
         faiss.normalize_L2(q_vec)
 
-        k = min(top_k, self.index.ntotal)
+        k = min(top_k * 3, self.index.ntotal)
         scores, indices = self.index.search(q_vec, k)
         scores  = scores[0].tolist()
         indices = indices[0].tolist()
@@ -101,23 +101,30 @@ class RetrievalService:
         source_infos: list[dict[str, Any]] = []
         seen_doc_ids: set[str] = set()
 
+        best_per_doc: dict[str, tuple[float, int, dict[str, Any]]] = {}
         for idx, score in zip(indices, scores):
-            if idx < 0:
+            if idx < 0 or score < self._MIN_CONTEXT_SCORE:
                 continue
             entry = self.doc_store[idx]
+            doc_id = entry["document_id"]
+            if doc_id not in best_per_doc or score > best_per_doc[doc_id][0]:
+                best_per_doc[doc_id] = (score, idx, entry)
+
+        for score, idx, entry in sorted(best_per_doc.values(), key=lambda x: x[0], reverse=True)[:top_k]:
             chunks.append(entry["chunk"])
             source_infos.append(entry["metadata"] | {"source": entry["source"]})
             seen_doc_ids.add(entry["document_id"])
 
-        if graph_expand:
+        top_score = scores[0] if scores else 0.0
+        if graph_expand and top_score >= self._MIN_EXPAND_SCORE:
             expanded_chunks, expanded_infos = self._expand_via_graph(
-                seen_doc_ids, source_infos, top_k=3, user_team=user_team
+                seen_doc_ids, source_infos, top_k=2, user_team=user_team
             )
             for info in expanded_infos:
                 info["_graph_expanded"] = True
             chunks.extend(expanded_chunks)
             source_infos.extend(expanded_infos)
-            scores.extend([0.5] * len(expanded_chunks))
+            scores.extend([top_score * 0.5] * len(expanded_chunks))
 
         if user_team and chunks:
             chunks, source_infos, scores = self._rerank_by_team(
@@ -189,9 +196,11 @@ class RetrievalService:
 
         return all_chunks, all_infos
 
-    _MIN_SOURCE_SCORE    = 0.40
-    _RELATIVE_SCORE_RATIO = 0.65
-    _MAX_SOURCES          = 5
+    _MIN_CONTEXT_SCORE    = 0.30
+    _MIN_SOURCE_SCORE     = 0.52
+    _RELATIVE_SCORE_RATIO = 0.72
+    _MIN_EXPAND_SCORE     = 0.45
+    _MAX_SOURCES          = 3
 
     def build_source_references(
         self,
@@ -299,7 +308,6 @@ class RetrievalService:
         for chunk, info, score in zip(chunks, source_infos, scores):
             owners = info.get("owners", [])
             team_tag = info.get("team", "")
-            # Boost if any owner token matches user_team (partial match)
             if any(user_team.lower() in o.lower() for o in owners) or user_team.lower() in team_tag.lower():
                 score = score * 1.3
             boosted.append((chunk, info, score))

@@ -46,7 +46,7 @@ async def ask(request: AskRequest) -> AskResponse:
     log.info(f"Question: {question}")
 
     chunks, source_infos, scores = _retrieval.retrieve(
-        query=question, top_k=15, graph_expand=True, user_team=request.user_team,
+        query=question, top_k=10, graph_expand=True, user_team=request.user_team,
     )
 
     if not chunks:
@@ -56,11 +56,24 @@ async def ask(request: AskRequest) -> AskResponse:
             confidence=0.0,
         )
 
-    answer, confidence = _llm.generate_answer(
+    answer, _ = _llm.generate_answer(
         question=question,
         context_chunks=chunks,
         source_info=source_infos,
     )
+
+    direct_scores = [
+        s for s, info in zip(scores, source_infos)
+        if not info.get("_graph_expanded") and s > 0
+    ]
+    if direct_scores:
+        top3_mean = sum(sorted(direct_scores, reverse=True)[:3]) / min(3, len(direct_scores))
+        confidence = round(min(0.95, top3_mean), 2)
+    else:
+        confidence = 0.0
+
+    if "don't have enough" in answer.lower() or "not sure" in answer.lower():
+        confidence = round(max(0.1, confidence - 0.25), 2)
 
     sources = _retrieval.build_source_references(chunks, source_infos, scores) if _llm._live else []
 

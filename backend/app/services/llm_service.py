@@ -110,11 +110,8 @@ class LLMService:
             log.warning(f"Groq chat failed ({exc}): falling back to mock")
             return self._mock_answer(question, context_chunks)
 
-        answer     = resp.choices[0].message.content or ""
-        confidence = min(0.95, 0.5 + 0.1 * len(context_chunks))
-        if "don't have enough" in answer.lower() or "not sure" in answer.lower():
-            confidence = max(0.2, confidence - 0.3)
-        return answer, round(confidence, 2)
+        answer = resp.choices[0].message.content or ""
+        return answer, 0.0
 
     def _mock_embeddings(self, n: int) -> np.ndarray:
         rng = np.random.default_rng(42)
